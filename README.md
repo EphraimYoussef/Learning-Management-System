@@ -3,6 +3,8 @@
 ## Overview
 This project is a Learning Management System (LMS) built using **Java with Spring Boot** following a **Layered Architecture**. The system supports role-based access control for **Admins, Instructors, and Students**, and provides functionalities for **User Management, Course Management, Assessments & Grading, Performance Tracking, and Notifications**.
 
+---
+
 ## Architecture
 The LMS follows a **Layered Architecture** pattern, which separates concerns into distinct layers:
 - **Controller Layer**: Handles HTTP requests and responses using RESTful APIs.
@@ -12,6 +14,8 @@ The LMS follows a **Layered Architecture** pattern, which separates concerns int
 - **DTO Layer**: Contains Data Transfer Objects for request/response models.
 - **Mapper Layer**: Transforms data between entities and DTOs.
 - **Security Layer**: Implements authentication and authorization using Spring Security.
+
+---
 
 ## Features
 ### 1. User Management
@@ -56,6 +60,7 @@ The LMS follows a **Layered Architecture** pattern, which separates concerns int
 - **Email Notifications**:
   - Students receive email alerts for course-related updates.
 
+---
 
 ## Technical Stack
 ### Backend
@@ -65,6 +70,8 @@ The LMS follows a **Layered Architecture** pattern, which separates concerns int
 
 ### Testing
 - **JUnit** for unit testing
+
+---
 
 ## API Endpoints
 ### Authentication
@@ -127,6 +134,7 @@ The LMS follows a **Layered Architecture** pattern, which separates concerns int
 | POST   | /api/instructor/add-questions/course/{id}   | Add questions to a course.                |
 | GET    | /api/student/questions/course/{id}          | Get quiz questions for a course.          |
 
+---
 
 ## Project Structure
 
