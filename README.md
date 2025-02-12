@@ -1,44 +1,132 @@
-# Learning Management System (LMS) - Backend
+# Learning Management System (LMS)
 
 ## Overview
+This project is a Learning Management System (LMS) built using **Java with Spring Boot** following a **Layered Architecture**. The system supports role-based access control for **Admins, Instructors, and Students**, and provides functionalities for **User Management, Course Management, Assessments & Grading, Performance Tracking, and Notifications**.
 
-The **Learning Management System (LMS)** backend is built using **Java Spring Boot** and designed to manage user roles, authentication, and role-based access to various system features. This backend facilitates the smooth operation of a Learning Management System, including user management, course enrollment, and role-specific operations.
-
----
+## Architecture
+The LMS follows a **Layered Architecture** pattern, which separates concerns into distinct layers:
+- **Controller Layer**: Handles HTTP requests and responses using RESTful APIs.
+- **Service Layer**: Contains business logic and application rules.
+- **Repository Layer**: Manages data access using Spring Data JPA and PostgreSQL.
+- **Entity Layer**: Defines database entity models.
+- **DTO Layer**: Contains Data Transfer Objects for request/response models.
+- **Mapper Layer**: Transforms data between entities and DTOs.
+- **Security Layer**: Implements authentication and authorization using Spring Security.
 
 ## Features
+### 1. User Management
+- **User Roles**: 
+  - **Admin**: Manages system settings, users, and courses.
+  - **Instructor**: Creates and manages courses, assessments, and grading.
+  - **Student**: Enrolls in courses, submits assignments, and takes quizzes.
+- **Functionalities**:
+  - User registration and login (JWT-based authentication).
+  - Profile management (view/update profile information).
 
-### User Roles
+### 2. Course Management
+- **Course Creation**:
+  - Instructors can create courses with a title, description, duration, and media files.
+  - Courses consist of multiple lessons.
+- **Enrollment Management**:
+  - Students can view and enroll in available courses.
+  - Admins and Instructors can track enrolled students.
+- **Attendance Management**:
+  - Instructors generate OTPs for lesson attendance.
+  - Students enter OTPs to mark attendance.
 
-- **Student**: Can view courses, enroll, and access learning materials.
-- **Instructor**: Can create and manage courses.
-- **Admin**: Manages user roles and overall system configurations.
-- **User**: Basic system user with limited access.
+### 3. Assessments & Grading
+- **Assessment Types**: Quizzes and Assignments.
+- **Quiz Creation**:
+  - Instructors create quizzes with MCQs, true/false, and short-answer questions.
+  - Randomized question selection per quiz attempt.
+- **Assignment Submission**:
+  - Students upload assignments for review.
+- **Grading & Feedback**:
+  - Instructors grade assignments and provide feedback.
+  - Students receive automated feedback for quizzes.
 
-### Authentication & Authorization
+### 4. Performance Tracking
+- Instructors track quiz scores, assignment submissions, and attendance.
+- Admins and Instructors generate performance analytics and reports.
 
-- Login functionality.
-- Token-based authentication using JWT.
-- Role-based URL access control.
+### 5. Notifications
+- **System Notifications**:
+  - Students receive notifications for enrollments, grades, and course updates.
+  - Instructors receive notifications for student enrollments.
+- **Email Notifications**:
+  - Students receive email alerts for course-related updates.
 
-### Core Operations
 
-- Create, update, delete, and view courses.
-- User registration and management.
-- Role-specific access control for functions.
+## Technical Stack
+### Backend
+- **Java** with **Spring Boot** (for RESTful API services)
+- **PostgreSQL** (database management)
+- **Spring Security** (authentication & authorization)
 
----
+### Testing
+- **JUnit** for unit testing
 
-## Technologies Used
+## API Endpoints
+### Authentication
+| Method | Endpoint              | Description                                      |
+|--------|----------------------|--------------------------------------------------|
+| POST   | /api/auth/login      | Authenticate user and return JWT token.         |
+| POST   | /api/auth/register   | Register a new user.                            |
+| GET    | /api/auth/confirm    | Confirm user registration via token.            |
 
-| **Component**         | **Technology**                   |
-| --------------------- | -------------------------------- |
-| **Backend Framework** | Java Spring Boot (version 3.4.1) |
-| **Database**          | PostgreSQL                       |
-| **Authentication**    | JWT                              |
-| **Testing Tools**     | Postman                          |
+### Admin Management
+| Method | Endpoint                       | Description                                 |
+|--------|--------------------------------|---------------------------------------------|
+| GET    | /api/admin/users              | Get all users (Admin only).                |
+| PUT    | /api/admin/assign-role/{id}   | Assign role to user (Admin only).         |
+| PUT    | /api/admin/deactivate/{id}    | Deactivate a user (Admin only).           |
 
----
+### Course Management
+| Method | Endpoint                                     | Description                                        |
+|--------|---------------------------------------------|----------------------------------------------------|
+| POST   | /api/instructor/course/create             | Create a new course (Instructor only).           |
+| GET    | /api/instructor/courses                   | Get courses by instructor (Instructor only).     |
+| DELETE | /api/instructor/course/{id}               | Delete a course (Instructor/Admin).              |
+| POST   | /api/instructor/upload/course/{id}        | Upload media files for a course.                 |
+| GET    | /api/student/courses                      | View available courses (Student).                |
+| GET    | /api/student/get/course/{id}             | Get course details by ID.                        |
+| POST   | /api/student/enroll/course/{id}          | Enroll in a course (Student).                    |
+
+### Lesson Management
+| Method | Endpoint                                           | Description                                |
+|--------|---------------------------------------------------|--------------------------------------------|
+| POST   | /api/instructor/lessons/course/{id}              | Add a lesson to a course.                 |
+| POST   | /api/instructor/generate-otp/course/{id}/lessons/{id} | Generate OTP for lesson attendance. |
+| POST   | /api/student/course/{id}/lessons/{id}/validate-otp | Validate OTP for lesson attendance. |
+
+### Assignment Management
+| Method | Endpoint                               | Description                                 |
+|--------|---------------------------------------|---------------------------------------------|
+| POST   | /api/instructor/assignment/create    | Create a new assignment (Instructor only). |
+| GET    | /api/student/assignment/{id}        | Get assignment by ID (Student).            |
+| GET    | /api/student/assignments            | Get all assignments (Student).             |
+| PUT    | /api/instructor/assignment/{id}     | Update an assignment (Instructor only).    |
+| DELETE | /api/instructor/assignment/{id}     | Delete an assignment (Instructor only).    |
+
+### Enrollment Management
+| Method | Endpoint                                          | Description                                |
+|--------|--------------------------------------------------|--------------------------------------------|
+| GET    | /api/instructor/enrollments/course/{id}        | Get enrolled students for a course.       |
+| DELETE | /api/instructor/course/{id}/enrollments/{id}   | Remove student from a course.             |
+| POST   | /api/instructor/enrollments/{id}/confirm      | Confirm student enrollment.               |
+
+### Performance Tracking
+| Method | Endpoint                                              | Description                                |
+|--------|------------------------------------------------------|--------------------------------------------|
+| GET    | /api/instructor/performance/course/{id}/student/{id} | Get student performance in a course.      |
+| GET    | /api/instructor/attendance/course/lessons/{id}      | Get attendance records for a lesson.      |
+
+### Quiz & Questions Management
+| Method | Endpoint                                        | Description                                |
+|--------|-----------------------------------------------|--------------------------------------------|
+| POST   | /api/instructor/add-questions/course/{id}   | Add questions to a course.                |
+| GET    | /api/student/questions/course/{id}          | Get quiz questions for a course.          |
+
 
 ## Project Structure
 
@@ -105,55 +193,11 @@ src/
 
 ---
 
-## API Endpoints
-
-### Authentication
-
-| **Method** | **Endpoint**   | **Description**                         |
-| ---------- | -------------- | --------------------------------------- |
-| POST       | /auth/login    | Authenticate user and return JWT token. |
-| POST       | /auth/register | Register a new user.                    |
-
-### User Management
-
-| **Method** | **Endpoint**     | **Description**                |
-| ---------- | ---------------- | ------------------------------ |
-| GET        | /users           | List all users (Admin only).   |
-| PUT        | /users/{id}/role | Update user role (Admin only). |
-
-### Course Management
-
-| **Method** | **Endpoint**  | **Description**                              |
-| ---------- | ------------- | -------------------------------------------- |
-| GET        | /courses      | View all courses (Student/Instructor/Admin). |
-| POST       | /courses      | Create a new course (Instructor only).       |
-| PUT        | /courses/{id} | Update course details (Instructor only).     |
-| DELETE     | /courses/{id} | Delete a course (Instructor/Admin).          |
-
----
-
-## Testing
+## How to test it:
 
 1. Open Postman.
 2. Import the Postman collection provided in the repository (if available) or manually create requests based on the endpoints listed above.
 3. Test the endpoints using appropriate roles and JWT tokens.
-
----
-
-## Contribution
-
-Contributions are welcome! Follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Commit your changes and push to your fork.
-4. Open a pull request to the main repository.
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
