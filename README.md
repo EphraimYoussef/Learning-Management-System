@@ -62,7 +62,7 @@ The LMS follows a **Layered Architecture** pattern, which separates concerns int
 
 ---
 
-## Technical Stack
+## Technical
 ### Backend
 - **Java** with **Spring Boot** (for RESTful API services)
 - **PostgreSQL** (database management)
@@ -201,7 +201,7 @@ src/
 
 ---
 
-## How to test the EndPoints:
+## How to test the EndPoints
 
 1. Open Postman.
 2. Create requests based on the endpoints listed above.
