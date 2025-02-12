@@ -201,7 +201,7 @@ src/
 
 ---
 
-## How to test it:
+## How to test the EndPoints:
 
 1. Open Postman.
 2. Create requests based on the endpoints listed above.
