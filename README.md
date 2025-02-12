@@ -204,7 +204,7 @@ src/
 ## How to test it:
 
 1. Open Postman.
-2. Import the Postman collection provided in the repository (if available) or manually create requests based on the endpoints listed above.
+2. Create requests based on the endpoints listed above.
 3. Test the endpoints using appropriate roles and JWT tokens.
 
 ---
